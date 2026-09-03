@@ -1,0 +1,29 @@
+Shenrui ComfyUI Toolkit - initial public manifest
+================================================
+
+Generated: 2026-09-03
+MANIFEST.txt is intentionally not self-hashed.
+
+SHA-256:
+b2294ea27bc6bc0aa4e8131978519c2f76ec2e2d408182d7320ee10b58d076de  .gitignore
+65b9602134a4b86058a6ba53c0b662f7ae250e17ecd310d7acdd99c6e783f781  LICENSE
+125bbf911b843550a1ad7cb05b5a670f2df5f99ab8dee8ff7dcd57ef6c3901cf  NOTICE.md
+c00402cf1a9b21c97834c396681bed7f7a5b8100e6e35525119a6bbf25460fd4  README.md
+3c25f6366e81d07f6768da87a716aa8bab1b52d57d7c2c426627192fb93466ac  README.zh-CN.md
+205c806116faabd47036cddff20c6291f50139f7e68c512e77e5dc3f9f15c53a  SKILL.md
+ad49a35a09f522c5d8fc64f08cd7805e11f505f95912fbb852e13de9363c8b3c  assets/silverwolf-comfyui-sticker.png
+06889440f6070353e64f2bfa790a42bcb5e6e8c6f578aa0c912fc14aef3e6fdf  references/local.md
+633008f651e316168628480595d26d7f41b9288ebec8e4f396581290775b8cbb  references/remote-server.md
+a5d5e24b463bb5f8a6df5beb9254dfc67780aadf78acadbddf033eef973e1f90  scripts/_common.py
+ecdb5515c79e1c8c8958bf6db71e69d76a36d54f13a9c99b343ecb415ee471cd  scripts/run_workflow.py
+0b720f56a3af23c25de28baeea82f034fda3b70d8dc4812fa50c9627f93e0403  scripts/run_saved_workflow_batch.py
+7ac4ab1cac4782ebff18073f636ff87c4dcccefaa22f0f9dbd634faaeb4b2bcc  tests/test_run_saved_workflow_batch.py
+
+Verification:
+- Skill frontmatter parsed as YAML-compatible metadata
+- Python syntax and both runner help commands passed
+- Three download-safety regression tests passed
+- No compiled Python caches included
+- No credential-shaped values, private IP addresses, private host aliases,
+  organization-specific paths, or source-machine absolute paths detected
+- Sticker is a 1226x1283 RGBA PNG with an alpha channel
