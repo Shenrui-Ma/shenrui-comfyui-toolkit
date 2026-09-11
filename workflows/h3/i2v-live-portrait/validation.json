@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workflow_id": "h3-i2v-live-portrait",
+  "status": "adapted; not rerun",
+  "scope": "file-only; no rendering, inference, model loading, visual inspection or live API requests",
+  "source_sha256": "2b21a42087edae0e2df8c3568f27e79c9674a73564a5d73bc121badbb2385522",
+  "template_sha256": "d68e490716e1787a951f687162c9d7fb29184c0a4cc8397a1c726b6db45bc908",
+  "secondary_length_source_sha256": "e5771eab5c6f3ef973e4033bcfb5a7d8747fb1560eca0d3e10c692713143d133",
+  "node_count": 16,
+  "link_count": 19,
+  "output_node": "145",
+  "source_adaptation_fields": [
+    "119.vae_name",
+    "120.vae_name",
+    "128.clip_name",
+    "129.noise_seed",
+    "136.height",
+    "136.length",
+    "136.prompt",
+    "136.width",
+    "137.image",
+    "145.filename_prefix",
+    "145.save_metadata",
+    "147.model_name",
+    "620.unet_name"
+  ],
+  "checks": {
+    "json_parse": true,
+    "same_source_nodes_classes_and_input_keys": true,
+    "only_declared_parameterization_and_metadata_changes": true,
+    "all_nodes_reachable_from_output": true,
+    "acyclic_and_no_dangling_links": true,
+    "first_frame_binding": true,
+    "native_audio_binding": true,
+    "rife_24_to_60": true,
+    "source_sampling_parameters": true,
+    "placeholder_schema_match": true,
+    "private_source_values_removed": true,
+    "catalog_paths_and_hashes": true
+  },
+  "not_checked": [
+    "Live object_info and custom-node versions",
+    "Model availability and precision/backend compatibility",
+    "GPU memory and inference execution",
+    "15-second preset with this attention patch",
+    "Actual decoded frame count, duration, audio and visual fidelity"
+  ]
+}

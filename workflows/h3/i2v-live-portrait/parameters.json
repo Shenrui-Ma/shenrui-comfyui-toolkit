@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "workflow_id": "h3-i2v-live-portrait",
+  "replacement": "Replace an entire {{name}} JSON value with the typed value after parsing JSON; do not interpolate strings into raw JSON.",
+  "parameters": {
+    "diffusion_model": {
+      "type": "string",
+      "required": true,
+      "node_id": "620",
+      "input": "unet_name",
+      "description": "H3 FL2VA diffusion weight filename from the UNETLoader enumeration; match the installed H3 implementation and quantization backend."
+    },
+    "text_encoder": {
+      "type": "string",
+      "required": true,
+      "node_id": "128",
+      "input": "clip_name",
+      "description": "H3-compatible text encoder filename from CLIPLoader; loader type remains minimax."
+    },
+    "video_vae": {
+      "type": "string",
+      "required": true,
+      "node_id": "119",
+      "input": "vae_name",
+      "description": "H3 video VAE filename from VAELoader."
+    },
+    "audio_vae": {
+      "type": "string",
+      "required": true,
+      "node_id": "120",
+      "input": "vae_name",
+      "description": "H3 audio VAE filename from VAELoader; not interchangeable with the video VAE."
+    },
+    "first_frame": {
+      "type": "string",
+      "required": true,
+      "node_id": "137",
+      "input": "image",
+      "description": "ComfyUI input-relative image name returned by upload or verified under its input directory; never a client-only absolute path."
+    },
+    "prompt": {
+      "type": "string",
+      "required": true,
+      "node_id": "136",
+      "input": "prompt",
+      "description": "One-shot visual motion and soundscape prompt anchored to Picture 1; describe only the intended duration."
+    },
+    "width": {
+      "type": "integer",
+      "required": true,
+      "node_id": "136",
+      "input": "width",
+      "description": "Target width accepted by the installed MiniMaxH3ImageToVideo node."
+    },
+    "height": {
+      "type": "integer",
+      "required": true,
+      "node_id": "136",
+      "input": "height",
+      "description": "Target height accepted by the installed MiniMaxH3ImageToVideo node."
+    },
+    "length": {
+      "type": "integer",
+      "required": true,
+      "node_id": "136",
+      "input": "length",
+      "description": "H3 input frame-length parameter at native 24 fps; not the final 60 fps frame count."
+    },
+    "seed": {
+      "type": "integer",
+      "required": true,
+      "node_id": "129",
+      "input": "noise_seed",
+      "description": "Explicit per-shot seed; use integer-safe JSON handling, not a floating-point conversion."
+    },
+    "output_prefix": {
+      "type": "string",
+      "required": true,
+      "node_id": "145",
+      "input": "filename_prefix",
+      "description": "Unique ComfyUI output-relative prefix for this run and shot."
+    },
+    "rife_model": {
+      "type": "string",
+      "required": true,
+      "node_id": "147",
+      "input": "model_name",
+      "description": "RIFE model filename accepted by the installed RIFEInterpolation node."
+    }
+  },
+  "presets": {
+    "portrait-10s": {
+      "width": 864,
+      "height": 1344,
+      "length": 243,
+      "status": "source-derived parameters; public adaptation not rerun"
+    },
+    "portrait-15s": {
+      "width": 864,
+      "height": 1344,
+      "length": 362,
+      "status": "length from a separately accelerated source graph; applying it to this graph is not rerun"
+    }
+  },
+  "fixed": {
+    "steps": 20,
+    "sampler": "res_multistep",
+    "scheduler": "simple",
+    "denoise": 1.0,
+    "source_fps": 24.0,
+    "target_fps": 60.0,
+    "native_audio": true,
+    "save_metadata": false
+  },
+  "required_node_classes": [
+    "BasicGuider",
+    "BasicScheduler",
+    "CLIPLoader",
+    "KSamplerSelect",
+    "LoadImage",
+    "MiniMaxH3ImageToVideo",
+    "MiniMaxH3MemoryEfficientSageAttentionPatch",
+    "RIFEInterpolation",
+    "RandomNoise",
+    "SamplerCustomAdvanced",
+    "UNETLoader",
+    "VAEDecode",
+    "VAEDecodeAudio",
+    "VAELoader",
+    "VHS_VideoCombine"
+  ],
+  "binding_checks": [
+    "136.first_frame must equal [137, 0]; prompt-only reference text cannot replace this edge.",
+    "136 outputs 0 and 1 feed the guider and sampler respectively.",
+    "125 output 0 feeds both video and audio VAE decoders.",
+    "145.images must equal [147, 0] and 145.audio must equal [121, 0].",
+    "145.frame_rate equals 147.target_fps; 147.source_fps stays 24.",
+    "Every required node class, input, enum and model filename must exist in the target object_info before submission.",
+    "All placeholders must be resolved and integer parameters must remain JSON integers before submission."
+  ]
+}
