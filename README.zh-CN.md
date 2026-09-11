@@ -140,3 +140,7 @@ python3 -B -m unittest discover -s tests -v
 部分通用 runner 代码改编自 [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) 中的 ComfyUI skill，贡献者信息见 [`NOTICE.md`](NOTICE.md)。仓库内的软件与文档采用 [MIT License](LICENSE)，第三方名称、商标和角色形象除外。
 
 银狼贴纸是为本仓库生成的非官方同人素材。银狼与《崩坏：星穹铁道》的相关权利归各自权利人所有，该角色形象不适用本仓库的软件 MIT 许可。
+
+## 工作流目录
+
+[Catalog / 工作流索引](workflows/README.md) · [Video ReGen Recipes](https://github.com/Shenrui-Ma/video-regen-recipes)

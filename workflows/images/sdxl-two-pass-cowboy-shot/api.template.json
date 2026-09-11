@@ -1,0 +1,251 @@
+{
+  "3": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": "{{seed}}",
+      "steps": 35,
+      "cfg": 7.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "normal",
+      "denoise": 1.0,
+      "model": [
+        "66",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "latent_image": [
+        "5",
+        0
+      ]
+    }
+  },
+  "5": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1344,
+      "height": 1344,
+      "batch_size": 1
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "{{positive_prompt}}",
+      "clip": [
+        "66",
+        1
+      ]
+    }
+  },
+  "7": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "{{negative_prompt}}",
+      "clip": [
+        "66",
+        1
+      ]
+    }
+  },
+  "11": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": "{{seed}}",
+      "steps": 35,
+      "cfg": 7.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "normal",
+      "denoise": 0.1,
+      "model": [
+        "66",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "latent_image": [
+        "20",
+        0
+      ]
+    }
+  },
+  "12": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "{{output_prefix}}",
+      "images": [
+        "13",
+        0
+      ]
+    }
+  },
+  "13": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "11",
+        0
+      ],
+      "vae": [
+        "34",
+        0
+      ]
+    }
+  },
+  "20": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "24",
+        0
+      ],
+      "vae": [
+        "34",
+        0
+      ]
+    }
+  },
+  "21": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "34",
+        0
+      ]
+    }
+  },
+  "22": {
+    "class_type": "ImageUpscaleWithModel",
+    "inputs": {
+      "upscale_model": [
+        "23",
+        0
+      ],
+      "image": [
+        "21",
+        0
+      ]
+    }
+  },
+  "23": {
+    "class_type": "UpscaleModelLoader",
+    "inputs": {
+      "model_name": "{{node_23_model_name}}"
+    }
+  },
+  "24": {
+    "class_type": "ImageScale",
+    "inputs": {
+      "upscale_method": "area",
+      "width": 2352,
+      "height": 2352,
+      "crop": "disabled",
+      "image": [
+        "22",
+        0
+      ]
+    }
+  },
+  "25": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "{{node_25_ckpt_name}}"
+    }
+  },
+  "27": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "lora_name": "{{node_27_lora_name}}",
+      "strength_model": 1.0,
+      "strength_clip": 1.0,
+      "model": [
+        "25",
+        0
+      ],
+      "clip": [
+        "35",
+        0
+      ]
+    }
+  },
+  "34": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "{{node_34_vae_name}}"
+    }
+  },
+  "35": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "stop_at_clip_layer": -2,
+      "clip": [
+        "25",
+        1
+      ]
+    }
+  },
+  "66": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "lora_name": "{{node_66_lora_name}}",
+      "strength_model": 0.0,
+      "strength_clip": 1.0,
+      "model": [
+        "69",
+        0
+      ],
+      "clip": [
+        "69",
+        1
+      ]
+    }
+  },
+  "68": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "lora_name": "{{node_68_lora_name}}",
+      "strength_model": 1.0,
+      "strength_clip": 1.0,
+      "model": [
+        "27",
+        0
+      ],
+      "clip": [
+        "27",
+        1
+      ]
+    }
+  },
+  "69": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "lora_name": "{{node_69_lora_name}}",
+      "strength_model": 0.0,
+      "strength_clip": 1.0,
+      "model": [
+        "68",
+        0
+      ],
+      "clip": [
+        "68",
+        1
+      ]
+    }
+  }
+}

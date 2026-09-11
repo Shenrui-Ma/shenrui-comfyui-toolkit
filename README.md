@@ -140,3 +140,7 @@ Both runners expose `--help` without writing bytecode caches when invoked with `
 Parts of the shared runner implementation are adapted from the ComfyUI skill in [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent), with contributions credited in [`NOTICE.md`](NOTICE.md). The software and documentation in this repository are released under the [MIT License](LICENSE), except for third-party names, trademarks, and character depictions.
 
 The Silver Wolf sticker is unofficial fan art generated for this repository. Silver Wolf and *Honkai: Star Rail* belong to their respective rights holders; the character depiction is not offered under the MIT software license.
+
+## Workflow catalog
+
+[Catalog / 工作流索引](workflows/README.md) · [Video ReGen Recipes](https://github.com/Shenrui-Ma/video-regen-recipes)

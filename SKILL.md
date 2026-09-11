@@ -51,7 +51,7 @@ license: MIT
 
 ## 通用执行流程
 
-1. 确认工作流、提示词、参考图、数量、尺寸和输出目录。
+1. 确认工作流、提示词、参考图、数量、尺寸和输出目录。先查 `workflows/index.json`，按模型家族和生成模式选图；记录实际commit及文件哈希。若来自 Recipes，保持该配方已锁定的参数和版本，不自动更新或替换其工作流。
 2. 判断工作流格式：
    - API 格式：顶层通常是节点 ID 映射，使用 `scripts/run_workflow.py`。
    - 编辑器格式：顶层通常含 `nodes`、`links`，使用 `scripts/run_saved_workflow_batch.py`。

@@ -1,0 +1,13 @@
+{
+  "seed": "explicit integer seed shared by both samplers",
+  "positive_prompt": "user prompt, adapted to selected checkpoint",
+  "negative_prompt": "user prompt, adapted to selected checkpoint",
+  "output_prefix": "unique output prefix",
+  "node_23_model_name": "verified loader-relative model/input name",
+  "node_25_ckpt_name": "verified loader-relative model/input name",
+  "node_27_lora_name": "verified loader-relative model/input name",
+  "node_34_vae_name": "verified loader-relative model/input name",
+  "node_66_lora_name": "verified loader-relative model/input name",
+  "node_68_lora_name": "verified loader-relative model/input name",
+  "node_69_lora_name": "verified loader-relative model/input name"
+}
