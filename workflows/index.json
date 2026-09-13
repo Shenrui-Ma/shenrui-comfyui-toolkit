@@ -32,6 +32,26 @@
       "status": "adapted; not rerun",
       "guide": "workflows/h3/i2v-live-portrait/README.md",
       "parameters": "workflows/h3/i2v-live-portrait/parameters.json"
+    },
+    {
+      "id": "h3-heartache-native-first",
+      "path": "workflows/h3/heartache-native/first.api.template.json",
+      "sha256": "808ab69c8f9c2fdfb086c52b8e933fb2843b390631f73af68096906d4d074949",
+      "family": "MiniMax-H3",
+      "mode": "native-ref2va-first",
+      "format": "parameterized-comfyui-api",
+      "status": "reconstructed; custom package not published; not rerun",
+      "guide": "workflows/h3/heartache-native/README.md"
+    },
+    {
+      "id": "h3-heartache-native-continue",
+      "path": "workflows/h3/heartache-native/continue.api.template.json",
+      "sha256": "ab9539c79282a9054ec00bf32a8fc335837a49e96f525e5394a5012bf0f973fb",
+      "family": "MiniMax-H3",
+      "mode": "native-ref2va-continuation",
+      "format": "parameterized-comfyui-api",
+      "status": "reconstructed; custom package not published; not rerun",
+      "guide": "workflows/h3/heartache-native/README.md"
     }
   ]
 }

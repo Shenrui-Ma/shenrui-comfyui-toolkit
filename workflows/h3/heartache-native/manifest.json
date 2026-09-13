@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "inference_verified": false,
+  "install_ready": false,
+  "graphs": [
+    {
+      "file": "recovered-segment-01.api.json",
+      "node_count": 18,
+      "sha256": "f2ffe54420d5e2cfc48e2eb26995802cac2b3c1a4114f9dff911c30d07e47377",
+      "evidence": "sanitized-reconstruction; not-original-history",
+      "source_sha256": "910408c599d6b481c16cb932f6852bb0de84b828e45effa296c4c24d05e81e61"
+    },
+    {
+      "file": "recovered-segment-02.api.json",
+      "node_count": 21,
+      "sha256": "4c47193d4649056b066f04f2d8c5b4f66567bf93fbd66909e8a34e510c386cec",
+      "evidence": "sanitized-reconstruction; not-original-history",
+      "source_sha256": "0e77cab005639acd98835a9beeb45784ed7285d34a6e2da4f57170dda521a933"
+    },
+    {
+      "file": "recovered-segment-03.api.json",
+      "node_count": 21,
+      "sha256": "8582cf72ed6cdf0a51b93fb818bc11f4dc542005d64e8f446eb38ecc5f43478d",
+      "evidence": "sanitized-reconstruction; not-original-history",
+      "source_sha256": "cb1ca3d1d2bc7cf2605e5cec5a1d0aa5c8a3f258895141a24d76aa19a92ed25d"
+    },
+    {
+      "file": "recovered-segment-04.api.json",
+      "node_count": 21,
+      "sha256": "50f6d0e440612b12399880a2c5a597131f675bb2830e0d15c6b1422a9011dcb3",
+      "evidence": "sanitized-reconstruction; not-original-history",
+      "source_sha256": "bafcebb0466724f2e59f879a27524fcd0af71f661737db3d90c652aed75ce07e"
+    },
+    {
+      "file": "first.api.template.json",
+      "node_count": 18,
+      "sha256": "808ab69c8f9c2fdfb086c52b8e933fb2843b390631f73af68096906d4d074949",
+      "evidence": "parameterized-from-sanitized-reconstruction"
+    },
+    {
+      "file": "continue.api.template.json",
+      "node_count": 21,
+      "sha256": "ab9539c79282a9054ec00bf32a8fc335837a49e96f525e5394a5012bf0f973fb",
+      "evidence": "parameterized-from-sanitized-reconstruction"
+    }
+  ],
+  "node_sources": {
+    "BasicGuider": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "comfy_extras.nodes_custom_sampler",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    },
+    "BasicScheduler": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "comfy_extras.nodes_custom_sampler",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    },
+    "CLIPLoader": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "nodes",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    },
+    "CreateVideo": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "comfy_extras.nodes_video",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    },
+    "GetVideoComponents": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "comfy_extras.nodes_video",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    },
+    "KSamplerSelect": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "comfy_extras.nodes_custom_sampler",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    },
+    "LoadImage": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "nodes",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    },
+    "LoadMiniMaxH3AVLatent": {
+      "kind": "custom",
+      "package": "HermesH3Continuation",
+      "repository": null,
+      "commit": null,
+      "license": null,
+      "source_status": "author-local-source; public-install-package-pending",
+      "source_sha256": "edf270a641808282f5d3ff51a260518821a59ad1dffcd27e23e6f6794787c573"
+    },
+    "LoadVideo": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "comfy_extras.nodes_video",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    },
+    "MiniMaxH3MotionContext": {
+      "kind": "custom",
+      "package": "H3MotionContextOfficial",
+      "repository": "https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context",
+      "commit": "f80e36bc1d7887a143b12e6645313fd6b9cd2aee",
+      "license": "GPL-3.0",
+      "source_status": "current-installed-checkout; local-nodes.py-modification; not-historical-lock"
+    },
+    "MiniMaxH3ReferenceToVideo": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "comfy_extras.nodes_minimax_h3",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    },
+    "RandomNoise": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "comfy_extras.nodes_custom_sampler",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    },
+    "SamplerCustomAdvanced": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "comfy_extras.nodes_custom_sampler",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    },
+    "SaveMiniMaxH3AVLatent": {
+      "kind": "custom",
+      "package": "HermesH3Continuation",
+      "repository": null,
+      "commit": null,
+      "license": null,
+      "source_status": "author-local-source; public-install-package-pending",
+      "source_sha256": "edf270a641808282f5d3ff51a260518821a59ad1dffcd27e23e6f6794787c573"
+    },
+    "SaveVideo": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "comfy_extras.nodes_video",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    },
+    "TrimMiniMaxH3MotionContext": {
+      "kind": "custom",
+      "package": "HermesH3Continuation",
+      "repository": null,
+      "commit": null,
+      "license": null,
+      "source_status": "author-local-source; public-install-package-pending",
+      "source_sha256": "edf270a641808282f5d3ff51a260518821a59ad1dffcd27e23e6f6794787c573"
+    },
+    "UNETLoader": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "nodes",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    },
+    "VAEDecode": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "nodes",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    },
+    "VAEDecodeAudio": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "comfy_extras.nodes_audio",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    },
+    "VAELoader": {
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "python_module": "nodes",
+      "historical_commit": null,
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5"
+    }
+  },
+  "sanitization": [
+    "Input names and output prefixes replaced",
+    "Absolute continuation paths replaced",
+    "Seeds serialized as decimal strings; parse to integer before API submission"
+  ],
+  "history_coverage": {
+    "segments_1_2": "controller and sidecar evidence; complete original history not recovered",
+    "segments_3_4": "10 of 21 history nodes recovered per segment; retained inputs equal reconstructions"
+  },
+  "blocking_dependencies": [
+    "HermesH3Continuation public installation package and license",
+    "Tested current core/custom-node combination and local-patch distribution"
+  ]
+}
