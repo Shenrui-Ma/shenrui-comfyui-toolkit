@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workflow_id": "rmbg-2-character-alpha",
+  "family": "image-utility",
+  "mode": "background-removal-alpha-mask",
+  "summary": "用 RMBG-2.0 把角色图去背景，同一个节点同时输出 Alpha 通道图与蒙版。用于需要透明角色图的模板；不改变图像内容，只做前景分离。",
+  "status": "graph-and-interface-pinned; not rerun in a clean public configuration",
+  "graph": {
+    "location": "this-repository",
+    "files": [
+      "api.template.json"
+    ],
+    "format": "parameterized-comfyui-api",
+    "parameter_syntax": "whole-value {{name}} placeholders; replace with typed values"
+  },
+  "nodes": [
+    {
+      "class_type": "LoadImage",
+      "kind": "core",
+      "role": "读入源图"
+    },
+    {
+      "class_type": "RMBG",
+      "kind": "custom",
+      "pack": "ComfyUI-RMBG",
+      "role": "前景分离，返回 [alpha, 前景, 蒙版, ...]"
+    },
+    {
+      "class_type": "SaveImage",
+      "kind": "core",
+      "role": "保存 alpha 与蒙版两张输出"
+    }
+  ],
+  "caller_inputs": {
+    "input_image": "string: loader-relative name inside the instance input directory",
+    "alpha_prefix": "string: output path prefix for the alpha image",
+    "mask_prefix": "string: output path prefix for the mask"
+  },
+  "outputs": {
+    "alpha_image": "node 3, SaveImage slot 0: RGBA image with the background removed",
+    "mask": "node 4, SaveImage slot 2: the greyscale mask"
+  },
+  "fixed_bindings": {
+    "model": "RMBG-2.0",
+    "sensitivity": 1.0,
+    "process_res": 1024,
+    "mask_blur": 0,
+    "mask_offset": 0,
+    "invert_output": false,
+    "refine_foreground": false,
+    "background": "Alpha",
+    "background_color": "#FFFFFF"
+  },
+  "notes": [
+    "SaveImage 的 slot 2 是蒙版；不同版本的 ComfyUI-RMBG 返回槽位不同，升级节点包后要按 /object_info 重新核对。",
+    "输出是透明 PNG。下游若要求 RGB，先按明确底色合成，不要直接丢弃 alpha。",
+    "去背景是可选步骤：用户没要求就不要替换原图。"
+  ],
+  "verified": {
+    "by_this_repository": "静态契约与占位符已检查；本仓库未在干净环境运行该图。",
+    "by_recipes": "既有预览环境用同一节点版本产出过 alpha 与 mask，并合成了白底 RGB；那是既有环境的一次运行，不是干净安装验证。"
+  },
+  "recovery": [
+    "节点不存在：确认 custom_nodes 里有 ComfyUI-RMBG 并已加载；区分禁用、导入失败与未安装。",
+    "模型缺失：按 dependencies.lock.json 的固定 revision 放置 RMBG-2.0 四个文件，核验字节数与 SHA-256。",
+    "槽位含义变化：以 /object_info 的返回顺序为准，不要假设 slot 2 仍是蒙版。"
+  ]
+}

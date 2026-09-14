@@ -10,3 +10,4 @@
 具体工作流在此维护，完整创作步骤与素材模板放在 [Video ReGen Recipes](https://github.com/Shenrui-Ma/video-regen-recipes)。消费者应记录使用的 commit 和文件哈希；找不到匹配工作流时如实说明，不能用不同模型或生成模式冒充。第三方节点包按其自身许可使用；本仓库的 MIT 不覆盖它们，也不在本仓库内复制其代码。
 
 - [SDXL 两次采样角色图](images/sdxl-two-pass-cowboy-shot/)：可参数化的 cowboy shot 角色参考图链路。
+- [RMBG-2.0 角色去背景](images/rmbg-2-alpha/)：可选的辅助步骤，输出透明图与蒙版。用户没要求就不要替换他的原图；下游要 RGB 时先按底色合成。

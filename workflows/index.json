@@ -73,6 +73,17 @@
           "sha256": "41bcbb34f84bd1a8bdd489cf365c4ad18b74dcc0a459e0c3337bcacbb22dcd24"
         }
       }
+    },
+    {
+      "id": "rmbg-2-character-alpha",
+      "path": "workflows/images/rmbg-2-alpha/api.template.json",
+      "sha256": "ce4a9bddcebf581b37cd7a21d2bba339569c9000b469fb7d2ce446b7e66fb735",
+      "family": "image-utility",
+      "mode": "background-removal-alpha-mask",
+      "format": "parameterized-comfyui-api",
+      "status": "offline-checked; single custom node pack; not rerun in a clean public configuration",
+      "guide": "workflows/images/rmbg-2-alpha/README.md",
+      "dependencies": "workflows/images/rmbg-2-alpha/dependencies.lock.json"
     }
   ]
 }

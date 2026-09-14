@@ -1,0 +1,5 @@
+{
+  "input_image": "已上传到实例输入目录的源图文件名；不要传绝对路径",
+  "alpha_prefix": "输出前缀，写 alpha 通道 PNG 的路径，例如 character-cutout/alpha",
+  "mask_prefix": "输出前缀，写蒙版的路径，例如 character-cutout/mask"
+}
