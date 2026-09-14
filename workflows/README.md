@@ -4,7 +4,8 @@
 
 - [H3 Ref2VA 对白基础图](h3/ref2va-dialogue/)：独立分段的联合音视频生成，配合 Recipes 构建器。
 - [H3 首帧动态立绘](h3/i2v-live-portrait/)：首帧图生视频、原生音频与 RIFE 24 → 60fps，配合角色合集模板。
+- [H3 原生续接](h3/ref2va-native-continuation/)：把上一段的联合音视频 latent 固定成下一段的 conditioning，跨剪辑点继续。图与节点包留在上游，本仓库只锁接口、依赖与版本。
 
-具体工作流在此维护，完整创作步骤与素材模板放在 [Video ReGen Recipes](https://github.com/Shenrui-Ma/video-regen-recipes)。消费者应记录使用的 commit 和文件哈希；找不到匹配工作流时如实说明，不能用不同模型或生成模式冒充。
+具体工作流在此维护，完整创作步骤与素材模板放在 [Video ReGen Recipes](https://github.com/Shenrui-Ma/video-regen-recipes)。消费者应记录使用的 commit 和文件哈希；找不到匹配工作流时如实说明，不能用不同模型或生成模式冒充。第三方节点包按其自身许可使用；本仓库的 MIT 不覆盖它们，也不在本仓库内复制其代码。
 
 - [SDXL 两次采样角色图](images/sdxl-two-pass-cowboy-shot/)：可参数化的 cowboy shot 角色参考图链路。

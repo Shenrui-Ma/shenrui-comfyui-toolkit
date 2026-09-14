@@ -32,6 +32,25 @@
       "status": "adapted; not rerun",
       "guide": "workflows/h3/i2v-live-portrait/README.md",
       "parameters": "workflows/h3/i2v-live-portrait/parameters.json"
+    },
+    {
+      "id": "h3-ref2va-native-continuation",
+      "path": "workflows/h3/ref2va-native-continuation/interface.json",
+      "sha256": "c34ddb5a33bc177de27fabdd0a9444cfb5d8fba4190c7cda212ef4ae7fa4e8df",
+      "family": "MiniMax-H3",
+      "mode": "ref2va-native-latent-continuation",
+      "format": "upstream-pinned-node-package",
+      "status": "interface-locked; node pack and graph stay upstream; not run in a public configuration",
+      "guide": "workflows/h3/ref2va-native-continuation/README.md",
+      "dependencies": "workflows/h3/ref2va-native-continuation/dependencies.lock.json",
+      "graph": {
+        "location": "upstream",
+        "repository": "https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context",
+        "tag": "v0.6.2",
+        "commit": "5335715abe54c1a9bfbe3494da29aae3e8635ce3",
+        "path": "example_workflows/MiniMax H3 - fl2va - ref2va.json",
+        "sha256": "d50b3050921183af6f0f8819fbdd79d88d8c1a37c28d40188b63a6eda53a32aa"
+      }
     }
   ]
 }

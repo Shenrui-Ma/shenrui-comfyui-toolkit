@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "workflow_id": "h3-ref2va-native-continuation",
+  "family": "MiniMax-H3",
+  "mode": "ref2va-native-latent-continuation",
+  "summary": "把上一段 H3 片段的联合音视频 latent 直接固定为下一段的 conditioning 行，让画面与声音跨剪辑点继续，而不是重新起一段听起来相近的生成。",
+  "status": "interface-locked; node pack not vendored; not run in a public configuration",
+  "graph": {
+    "location": "upstream",
+    "repository": "https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context",
+    "tag": "v0.6.2",
+    "commit": "5335715abe54c1a9bfbe3494da29aae3e8635ce3",
+    "license": "GPL-3.0",
+    "path": "example_workflows/MiniMax H3 - fl2va - ref2va.json",
+    "bytes": 132519,
+    "sha256": "d50b3050921183af6f0f8819fbdd79d88d8c1a37c28d40188b63a6eda53a32aa",
+    "note": "本仓库不复制该图，也不复制节点实现。按上面固定的 tag 与 commit 取用，并核对 SHA-256；上游 GPL-3.0 不随本仓库的 MIT 许可重新授权。"
+  },
+  "chaining_model": {
+    "unit": "clip",
+    "serial": true,
+    "rule": "串行生成。上一段完成后才提交下一段，断线先查询原队列与 history，不重复提交。",
+    "index_convention": "生成第 N 段时，Load 指向 N-1，Save 指向 N。第一段 Load=0（不读文件）、Save=1。"
+  },
+  "nodes": [
+    {
+      "class": "MiniMaxH3MotionContext",
+      "role": "把上一段的画面与声音固定进 conditioning，并输出本段需要裁掉的头部帧数",
+      "inputs": {
+        "conditioning": "CONDITIONING",
+        "vae": "VAE",
+        "latent": "LATENT"
+      },
+      "optional_inputs": {
+        "context_latent": "上一段采样器输出的 AV latent；接上它时画面与声音都从 latent 直接切出，context_frames 与 context_audio 被忽略",
+        "context_frames": "上一段解码后的 IMAGE；没有 context_latent 时才使用",
+        "audio_vae": "H3 音频 VAE；配合 context_audio 使用",
+        "context_audio": "上一段 AUDIO；接上 context_latent 时被忽略"
+      },
+      "outputs": ["conditioning", "trim_frames"]
+    },
+    {
+      "class": "MiniMaxH3MotionContextTrim",
+      "role": "把固定进来的头部从画面和声音上同步去掉，避免音画错位",
+      "inputs": {"images": "IMAGE", "trim_frames": "INT"},
+      "optional_inputs": {"audio": "AUDIO", "fps": "FLOAT", "match_tail": "BOOLEAN"},
+      "outputs": ["images", "audio"]
+    },
+    {
+      "class": "MiniMaxH3MotionContextSaveLatent",
+      "role": "把本段采样器输出的 H3 AV latent 存盘，供下一段跨运行读取",
+      "inputs": {"latent": "LATENT", "filename_prefix": "STRING", "clip_index": "INT"},
+      "outputs": ["latent_path"],
+      "note": "标准 Save/Load Latent 不能序列化 H3 的嵌套视频／音频对，因此需要这个节点。"
+    },
+    {
+      "class": "MiniMaxH3MotionContextLoadLatent",
+      "role": "读取要继续的那一段的 latent",
+      "inputs": {"latent_path": "STRING", "clip_index": "INT"},
+      "outputs": ["LATENT"],
+      "note": "clip_index 指要继续的那一段。指向具体文件时忽略索引；clip_index 为 0 时不读文件。"
+    },
+    {
+      "class": "MiniMaxH3MotionContextChain",
+      "role": "推进 Load/Save 索引并排队下一段的控制节点",
+      "inputs": {"segments": "INT"},
+      "outputs": [],
+      "note": "Load、Save 与本节点必须在同一个画布分组内，否则按钮无效。segments 为 0 表示直到手动停止。"
+    },
+    {
+      "class": "MiniMaxH3MotionContextSeamProbe",
+      "role": "测量接缝质量与电平台阶，用于验收而不是生成",
+      "inputs": {"clip_b_untrimmed": "AUDIO", "trim_frames": "INT"},
+      "optional_inputs": {"clip_a_latent": "LATENT", "audio_vae": "VAE", "fps": "FLOAT"},
+      "outputs": ["audio", "report"]
+    }
+  ],
+  "caller_inputs": {
+    "per_clip": ["角色图或首帧", "动作与声音提示词", "本段的 seed", "输出前缀", "本段的宽高与 length"],
+    "per_chain": ["原分辨率与帧率", "全部片段共用的模型文件名", "latent 保存目录", "目标 fps"]
+  },
+  "adjustable_parameters": {
+    "context_length": {"type": "enum", "values": ["5", "22", "39", "56"], "default": "22", "meaning": "固定上一段多少帧画面。只有这些长度是整数个 latent 步。窗口越长越连贯，但会从成片开头扣掉；56 约等于花 2.3 秒渲染最终丢弃的帧。"},
+    "audio_context_length": {"type": "integer", "min": 0, "max": 240, "default": 24, "meaning": "固定多少帧尾音，与画面窗口独立。0 表示跟随画面窗口。窗口与固定画面右端对齐，只决定声音往回追多远。3 的倍数落在 40Hz 音频栅格上，24 的倍数是整秒。"},
+    "trim_frames": {"type": "integer", "min": 0, "max": 4096, "default": 0, "meaning": "本段要裁掉的固定头部帧数，直接接 MiniMaxH3MotionContext 的输出，不手填。"},
+    "fps": {"type": "number", "min": 1.0, "max": 240.0, "default": 24.0, "meaning": "把裁剪换算成音频时长，必须与 Create Video 实际使用的帧率一致。"},
+    "match_tail": {"type": "boolean", "default": true, "meaning": "让音频时长严格等于 frames/fps，长了裁掉、短了补静音。H3 音频栅格四舍五入到最近的步，每段会多或少约 8ms，不处理会在每个接缝上累积。"},
+    "clip_index": {"type": "integer", "min": 0, "max": 9999, "meaning": "Save 写本段槽位，Load 读要继续的那一段。固定槽位让重掷覆盖自己的废稿，而不是不断堆文件。"},
+    "segments": {"type": "integer", "min": 0, "max": 9999, "default": 0, "meaning": "Chain 生成多少段后停止，0 表示直到手动停止。"},
+    "filename_prefix": {"type": "string", "default": "h3_context/clip", "meaning": "latent 保存前缀，相对 ComfyUI 输出目录。"},
+    "latent_path": {"type": "string", "default": "h3_context", "meaning": "已保存的 latent 文件或目录；相对路径按 ComfyUI 输出目录解析。"}
+  },
+  "outputs": {
+    "per_clip": ["发布用的 H.264 视频", "本段 canonical AV latent", "解码后的音频", "本段的提交记录：prompt_id、seed、参数、输出文件名"],
+    "per_chain": ["拼接后的成片", "接缝测量报告", "实际帧数与时长"]
+  },
+  "fixed_bindings": [
+    "MiniMaxH3MotionContext 的 latent 与 conditioning 必须来自同一条链的同一段。",
+    "trim_frames 由 MiniMaxH3MotionContext 输出驱动，画面与声音使用同一个值。",
+    "context_latent 必须是上一段采样器的输出，分辨率与本段一致。",
+    "Load、Save 与 Chain 必须在同一画布分组内。"
+  ],
+  "verified": {
+    "by_this_repository": "未执行。本包只锁定接口、依赖与固定版本，没有在本仓库的公开配置下启动 ComfyUI、加载权重或生成片段。",
+    "by_upstream": "上游 v0.6.2 自带测试与变更记录，声称在 0.32 与 0.33 上产生相同坐标；引用其结论不等于本仓库复现。",
+    "scope_note": "Recipes 里 bit-by-bit-heartache 的历史复现使用的是更早的接口（含 ApplyMiniMaxH3MotionContext 等类名），与本包锁定的 v0.6.2 类名不可互换。"
+  },
+  "recovery": [
+    {"symptom": "节点报布局契约检查失败", "action": "该包在首次使用时对照当前 ComfyUI 校验音频窗口的锚点算法。报错意味着上游布局变了，换用与目标 ComfyUI 版本匹配的包版本，或升级 ComfyUI；不要绕过检查继续提交。"},
+    {"symptom": "接缝上出现轻微发闷或短促咔声", "action": "检查 match_tail 是否为 true、trim_frames 是否来自 Motion Context 节点。音频栅格误差会沿链条累积。"},
+    {"symptom": "音画不同步，成片声音整体提前", "action": "确认画面和声音走了同一个 Trim 节点。只裁画面会让音频比视频长 trim_frames。"},
+    {"symptom": "Load 读到错误片段", "action": "核对 Load 与 Save 的 clip_index 是否满足「本段 = 上一段 + 1」，并确认没有换成自定义文件名。"},
+    {"symptom": "找不到匹配节点类", "action": "把本包的 required_node_classes 与目标实例 /object_info 对照，缺节点时安装固定版本或另建经过验证的适配图，不要静默断开续接。"}
+  ]
+}

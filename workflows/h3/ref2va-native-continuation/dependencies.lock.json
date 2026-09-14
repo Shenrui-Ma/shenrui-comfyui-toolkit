@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "workflow_id": "h3-ref2va-native-continuation",
+  "hash_basis": "Node pack pinned by release tag and commit. Model weights are not mirrored here; filenames resolve from the target instance's /object_info. null means not established, not zero.",
+  "comfyui": {
+    "min_version": "0.34.0",
+    "requirement_source": "Upstream v0.6.2 __init__ docstring: it registers plain keyframe dicts and hands them to stock code. Upstream 0.3.1 is the last release that works with 0.33.4 and older.",
+    "note": "旧包配合新 ComfyUI 会安装成功但接缝行为不成立，反之亦然。安装包成功不代表这套续接可用。"
+  },
+  "node_packs": [
+    {
+      "id": "h3-motion-context",
+      "display_name": "H3 Motion Context",
+      "repository": "https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context",
+      "tag": "v0.6.2",
+      "commit": "5335715abe54c1a9bfbe3494da29aae3e8635ce3",
+      "release_date": "2026-09-06",
+      "license": "GPL-3.0",
+      "install_path": "ComfyUI/custom_nodes/ComfyUI-H3-Motion-Context",
+      "required_node_classes": [
+        "MiniMaxH3MotionContext",
+        "MiniMaxH3MotionContextTrim",
+        "MiniMaxH3MotionContextSaveLatent",
+        "MiniMaxH3MotionContextLoadLatent",
+        "MiniMaxH3MotionContextChain",
+        "MiniMaxH3MotionContextSeamProbe"
+      ],
+      "node_category": "conditioning/minimax",
+      "vendored": false,
+      "license_note": "本仓库以 MIT 发布，不覆盖该 GPL-3.0 节点包。安装、修改与再分发该遵循其自身许可。"
+    }
+  ],
+  "h3_implementation": {
+    "repository": "https://github.com/MiniMax-AI/MiniMax-H3",
+    "weights_and_license": "https://huggingface.co/MiniMaxAI/MiniMax-H3",
+    "role": "H3 主模型、文本编码器与两路 VAE 的来源；不在本仓库镜像任何权重。"
+  },
+  "models": {
+    "diffusion_model": {
+      "node_id": "620",
+      "input": "unet_name",
+      "filename": null,
+      "sha256": null,
+      "resolution": "从目标实例 /object_info 的 UNETLoader 枚举中按已安装的 H3 实现与量化后端选择。"
+    },
+    "text_encoder": {
+      "node_id": "128",
+      "input": "clip_name",
+      "filename": null,
+      "sha256": null,
+      "resolution": "从 CLIPLoader 枚举选择；loader type 保持 minimax。"
+    },
+    "video_vae": {
+      "node_id": "119",
+      "input": "vae_name",
+      "filename": null,
+      "sha256": null,
+      "resolution": "从 VAELoader 枚举选择 H3 视频 VAE。"
+    },
+    "audio_vae": {
+      "node_id": "120",
+      "input": "vae_name",
+      "filename": null,
+      "sha256": null,
+      "resolution": "从 VAELoader 枚举选择 H3 音频 VAE；与视频 VAE 不可互换。"
+    }
+  },
+  "rife": {
+    "required": false,
+    "note": "本包本身不做插帧。需要 60fps 时另配 RIFE 变体并核对实际帧数，不要通过改播放帧率冒充插帧。"
+  },
+  "runtime_checks": [
+    "对照 /object_info 确认上面每个类名、输入与模型枚举都存在，再解析占位值。",
+    "确认目标 ComfyUI 版本不低于 0.34.0。",
+    "首次使用 Motion Context 节点时留意上游的布局契约检查输出；失败就停下来核对版本。",
+    "记录实际使用的 ComfyUI 版本、节点包 commit 与模型文件名。"
+  ],
+  "unknown_policy": "null 表示本仓库未确认该值，不从其他机器或历史记录回填。缺失的哈希应在实际运行环境里按文件重新计算并记录。"
+}
