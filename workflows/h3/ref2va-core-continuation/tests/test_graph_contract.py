@@ -72,6 +72,19 @@ class GraphShapeTests(unittest.TestCase):
             self.assertIn(required, used)
 
 
+    def test_graphs_use_whole_value_placeholders_only(self):
+        for name, graph in GRAPHS.items():
+            def scan(value, path=""):
+                if isinstance(value, str) and "{{" in value:
+                    self.assertRegex(value, r"^\{\{[A-Za-z_][A-Za-z0-9_]*\}\}$", f"{name}{path}")
+                elif isinstance(value, dict):
+                    for key, item in value.items():
+                        scan(item, f"{path}/{key}")
+                elif isinstance(value, list):
+                    for index, item in enumerate(value):
+                        scan(item, f"{path}[{index}]")
+            scan(graph)
+
 class HonestyTests(unittest.TestCase):
     def test_package_states_it_was_not_run_here(self):
         self.assertIn("未执行", INTERFACE["verified"]["by_this_repository"])

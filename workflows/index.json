@@ -55,7 +55,7 @@
     {
       "id": "h3-ref2va-core-continuation",
       "path": "workflows/h3/ref2va-core-continuation/first.api.template.json",
-      "sha256": "3bb1c5d25b8e1ff26046dcaf5d5b53bde72fef2ebd432f1fd21f81a20be0fd79",
+      "sha256": "e15319f545f1f3a363e9f8a2de82ecdbdfeb349d8c0d8522770b1060796ab235",
       "family": "MiniMax-H3",
       "mode": "ref2va-core-av-latent-continuation",
       "format": "parameterized-comfyui-api",
@@ -66,11 +66,11 @@
         "location": "this-repository",
         "first": {
           "path": "workflows/h3/ref2va-core-continuation/first.api.template.json",
-          "sha256": "3bb1c5d25b8e1ff26046dcaf5d5b53bde72fef2ebd432f1fd21f81a20be0fd79"
+          "sha256": "e15319f545f1f3a363e9f8a2de82ecdbdfeb349d8c0d8522770b1060796ab235"
         },
         "continue": {
           "path": "workflows/h3/ref2va-core-continuation/continue.api.template.json",
-          "sha256": "4c79fb783288bc16b85055a712875482e5a9f5a27ee7c9ef4f45a97fd0c9639a"
+          "sha256": "41bcbb34f84bd1a8bdd489cf365c4ad18b74dcc0a459e0c3337bcacbb22dcd24"
         }
       }
     }

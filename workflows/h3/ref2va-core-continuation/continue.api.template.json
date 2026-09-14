@@ -253,7 +253,7 @@
         "60",
         0
       ],
-      "filename_prefix": "{{latent_prefix}}-video"
+      "filename_prefix": "{{video_latent_prefix}}"
     }
   },
   "62": {
@@ -263,7 +263,7 @@
         "60",
         1
       ],
-      "filename_prefix": "{{latent_prefix}}-audio"
+      "filename_prefix": "{{audio_latent_prefix}}"
     }
   },
   "63": {

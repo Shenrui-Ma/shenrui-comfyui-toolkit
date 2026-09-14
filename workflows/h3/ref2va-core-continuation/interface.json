@@ -12,8 +12,8 @@
       "continue.api.template.json"
     ],
     "sha256": {
-      "first.api.template.json": "3bb1c5d25b8e1ff26046dcaf5d5b53bde72fef2ebd432f1fd21f81a20be0fd79",
-      "continue.api.template.json": "4c79fb783288bc16b85055a712875482e5a9f5a27ee7c9ef4f45a97fd0c9639a"
+      "first.api.template.json": "e15319f545f1f3a363e9f8a2de82ecdbdfeb349d8c0d8522770b1060796ab235",
+      "continue.api.template.json": "41bcbb34f84bd1a8bdd489cf365c4ad18b74dcc0a459e0c3337bcacbb22dcd24"
     },
     "format": "parameterized-comfyui-api",
     "parameter_syntax": "whole-value {{name}} placeholder only; replace with a typed value, never string interpolation"
@@ -209,13 +209,14 @@
     "steps": "整数，采样步数",
     "visible_frames": "整数，本段发布帧数（= 采样帧数 − 前段 context 保留帧）",
     "video_prefix": "SaveVideo.filename_prefix",
-    "latent_prefix": "SaveLatent.filename_prefix 前缀，实际写出 <prefix>-video 与 <prefix>-audio",
     "reference_image": "LoadImage.image，本段角色参考图",
     "reference_video": "LoadVideo.file，本段驱动视频切片",
     "previous_video_latent": "LoadLatent.latent，上一段的视频 latent 路径（仅续段）",
     "previous_audio_latent": "LoadLatent.latent，上一段的音频 latent 路径（仅续段）",
     "context_length": "MiniMaxH3MotionContext.context_length，预定义取值 5 / 22 / 39 / 56（仅续段）",
-    "audio_context_length": "MiniMaxH3MotionContext.audio_context_length，本图基线 24（仅续段）"
+    "audio_context_length": "MiniMaxH3MotionContext.audio_context_length，本图基线 24（仅续段）",
+    "video_latent_prefix": "SaveLatent.filename_prefix，本段视频 latent 的输出前缀（仅续段的前驱由此产生）",
+    "audio_latent_prefix": "SaveLatent.filename_prefix，本段音频 latent 的输出前缀"
   },
   "adjustable_parameters": {
     "fill_directly": [
@@ -228,9 +229,10 @@
       "sample_frames",
       "visible_frames",
       "video_prefix",
-      "latent_prefix",
       "previous_video_latent",
-      "previous_audio_latent"
+      "previous_audio_latent",
+      "video_latent_prefix",
+      "audio_latent_prefix"
     ],
     "predefined_choices": [
       "context_length",

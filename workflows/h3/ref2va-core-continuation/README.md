@@ -31,7 +31,7 @@
 | `steps` | 整数 |
 | `visible_frames` | 整数，本段发布帧数 |
 | `video_prefix` | `SaveVideo` 的输出前缀 |
-| `latent_prefix` | `SaveLatent` 前缀，实际写出 `<prefix>-video` 与 `<prefix>-audio` |
+| `video_latent_prefix`、`audio_latent_prefix` | 两路 `SaveLatent` 各自的前缀 |
 | `reference_image`、`reference_video` | 本段的角色参考图与驱动视频切片 |
 | `previous_video_latent`、`previous_audio_latent` | 上一段两路 latent 的路径（仅续段） |
 | `context_length` | 预定义取值 5 / 22 / 39 / 56（仅续段） |
