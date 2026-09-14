@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "workflow_id": "h3-ref2va-core-continuation",
+  "family": "MiniMax-H3",
+  "mode": "ref2va-core-av-latent-continuation",
+  "summary": "用 Core 官方节点存取联合音视频 latent、由 MiniMaxH3MotionContext 注入上一段 conditioning 的 H3 跨段续接。上一段的视频与音频 latent 各存一路，下一段用 LTXVConcatAVLatent 重组后送进 context_latent，画面与声音跨剪辑点继续。",
+  "status": "graph-and-interface-pinned; parameterized graphs included; not rerun in a clean public configuration",
+  "graph": {
+    "location": "this-repository",
+    "files": [
+      "first.api.template.json",
+      "continue.api.template.json"
+    ],
+    "sha256": {
+      "first.api.template.json": "3bb1c5d25b8e1ff26046dcaf5d5b53bde72fef2ebd432f1fd21f81a20be0fd79",
+      "continue.api.template.json": "4c79fb783288bc16b85055a712875482e5a9f5a27ee7c9ef4f45a97fd0c9639a"
+    },
+    "format": "parameterized-comfyui-api",
+    "parameter_syntax": "whole-value {{name}} placeholder only; replace with a typed value, never string interpolation"
+  },
+  "chaining_model": {
+    "unit": "clip",
+    "serial": true,
+    "rule": "串行生成。上一段采样完成、两路 latent 落盘后才提交下一段；断线先查原队列与 history，不重复提交。",
+    "index_convention": "本图不使用 Load/Save 索引节点：保存与读取都写成显式文件路径参数。第 N 段读第 N-1 段的两路 latent。"
+  },
+  "nodes": [
+    {
+      "class": "UNETLoader",
+      "role": "载入 H3 主模型（量化版本由参数决定）",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "nodes"
+    },
+    {
+      "class": "CLIPLoader",
+      "role": "载入 H3 文本编码器；loader type 固定 minimax",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "nodes"
+    },
+    {
+      "class": "VAELoader",
+      "role": "载入视频与音频 VAE，两个实例不可互换",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "nodes"
+    },
+    {
+      "class": "MiniMaxH3ReferenceToVideo",
+      "role": "参考图＋参考视频生成联合音视频，输出 AV latent",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "comfy_extras.nodes_minimax_h3"
+    },
+    {
+      "class": "RandomNoise",
+      "role": "采样种子",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "comfy_extras.nodes_custom_sampler"
+    },
+    {
+      "class": "BasicGuider",
+      "role": "把 conditioning 与模型接成 guider；本图无 CFG 字段",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "comfy_extras.nodes_custom_sampler"
+    },
+    {
+      "class": "KSamplerSelect",
+      "role": "采样器选择，基线 res_multistep",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "comfy_extras.nodes_custom_sampler"
+    },
+    {
+      "class": "BasicScheduler",
+      "role": "调度器与步数，基线 simple / 20 步",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "comfy_extras.nodes_custom_sampler"
+    },
+    {
+      "class": "SamplerCustomAdvanced",
+      "role": "实际采样，输出联合 AV latent",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "comfy_extras.nodes_custom_sampler"
+    },
+    {
+      "class": "VAEDecode",
+      "role": "解码画面",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "nodes"
+    },
+    {
+      "class": "CreateVideo",
+      "role": "按 fps 组装视频帧",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "comfy_extras.nodes_video"
+    },
+    {
+      "class": "SaveVideo",
+      "role": "落盘无声视频，供剪辑与配乐",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "comfy_extras.nodes_video"
+    },
+    {
+      "class": "LoadImage",
+      "role": "载入角色参考图",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "nodes"
+    },
+    {
+      "class": "LoadVideo",
+      "role": "载入本段驱动视频切片",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "comfy_extras.nodes_video"
+    },
+    {
+      "class": "GetVideoComponents",
+      "role": "把驱动视频拆成帧序列",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "comfy_extras.nodes_video"
+    },
+    {
+      "class": "ImageFromBatch",
+      "role": "按 Motion Context 输出的 trim 值裁出发布帧",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "comfy_extras.nodes_images"
+    },
+    {
+      "class": "LTXVSeparateAVLatent",
+      "role": "把采样器联合 AV latent 拆成视频/音频两路",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "comfy_extras.nodes_lt"
+    },
+    {
+      "class": "SaveLatent",
+      "role": "保存单路 latent；联合 NestedTensor 不能直接交给它",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "nodes"
+    },
+    {
+      "class": "LoadLatent",
+      "role": "读回上一段的视频/音频 latent",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "nodes"
+    },
+    {
+      "class": "LTXVConcatAVLatent",
+      "role": "把两路 latent 重组回联合 AV latent，送入 context_latent",
+      "kind": "core",
+      "repository": "https://github.com/Comfy-Org/ComfyUI",
+      "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+      "python_module": "comfy_extras.nodes_lt"
+    },
+    {
+      "class": "MiniMaxH3MotionContext",
+      "role": "把上一段的画面与声音固定进 conditioning；输出本段要裁掉的 trim 帧数",
+      "kind": "custom",
+      "package": "H3MotionContextOfficial",
+      "repository": "https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context",
+      "commit": "f80e36bc1d7887a143b12e6645313fd6b9cd2aee",
+      "license": "GPL-3.0",
+      "vendored": false
+    }
+  ],
+  "caller_inputs": {
+    "diffusion_model": "UNETLoader.unet_name，从目标实例 /object_info 的枚举选择",
+    "text_encoder": "CLIPLoader.clip_name，type 保持 minimax",
+    "video_vae": "VAELoader.vae_name，H3 视频 VAE",
+    "audio_vae": "VAELoader.vae_name，H3 音频 VAE",
+    "prompt": "MiniMaxH3ReferenceToVideo.prompt，整段提示词文本",
+    "width": "整数，采样宽度（64 的倍数）",
+    "height": "整数，采样高度（64 的倍数）",
+    "sample_frames": "整数，采样帧数；须落在 17k+5 网格上",
+    "seed": "uint64 整数；以字符串保存的 seed 提交前必须解析为整数",
+    "steps": "整数，采样步数",
+    "visible_frames": "整数，本段发布帧数（= 采样帧数 − 前段 context 保留帧）",
+    "video_prefix": "SaveVideo.filename_prefix",
+    "latent_prefix": "SaveLatent.filename_prefix 前缀，实际写出 <prefix>-video 与 <prefix>-audio",
+    "reference_image": "LoadImage.image，本段角色参考图",
+    "reference_video": "LoadVideo.file，本段驱动视频切片",
+    "previous_video_latent": "LoadLatent.latent，上一段的视频 latent 路径（仅续段）",
+    "previous_audio_latent": "LoadLatent.latent，上一段的音频 latent 路径（仅续段）",
+    "context_length": "MiniMaxH3MotionContext.context_length，预定义取值 5 / 22 / 39 / 56（仅续段）",
+    "audio_context_length": "MiniMaxH3MotionContext.audio_context_length，本图基线 24（仅续段）"
+  },
+  "adjustable_parameters": {
+    "fill_directly": [
+      "reference_image",
+      "reference_video",
+      "prompt",
+      "seed",
+      "width",
+      "height",
+      "sample_frames",
+      "visible_frames",
+      "video_prefix",
+      "latent_prefix",
+      "previous_video_latent",
+      "previous_audio_latent"
+    ],
+    "predefined_choices": [
+      "context_length",
+      "audio_context_length"
+    ],
+    "runs_a_different_workflow_if_changed": [
+      "替换节点包版本",
+      "更换续接语义或删掉 Trim/音频分支",
+      "换成未验证的 H3 权重或量化"
+    ]
+  },
+  "outputs": {
+    "published_video": "SaveVideo 的 mp4（无声，配乐在剪辑阶段铺）",
+    "checkpoints": "两路 latent 文件，作为下一段的前驱",
+    "note": "图里不产出成品音轨，也不决定剪辑节奏"
+  },
+  "fixed_bindings": {
+    "sampler": "res_multistep",
+    "scheduler": "simple",
+    "denoise": 1.0,
+    "fps": 24.0,
+    "ref_image_size": "match",
+    "bit_depth": 8,
+    "video_codec": "h264",
+    "guider": "BasicGuider（无 CFG 字段，不补填）"
+  },
+  "verified": {
+    "by_this_repository": "未执行。本包只整理图结构与接口，本仓库没有启动过 ComfyUI、没有加载权重。",
+    "scheme_evidence": "同一节点方案的图在 Video ReGen Recipes 的既有环境完成过真实首段采样；这是方案层面的证据，不等于本包在新环境实跑通过。",
+    "clean_install_inference_verified": false
+  },
+  "recovery": [
+    {
+      "symptom": "提示缺节点或节点类名不匹配",
+      "action": "对照目标实例 /object_info 核验 21 个 Core 类与 MiniMaxH3MotionContext；缺 Motion Context 包就按 dependencies.lock.json 的 commit 安装，不要静默断开续接继续提交。"
+    },
+    {
+      "symptom": "接缝处音画错位或时长对不上",
+      "action": "确认画面与声音交给同一个裁切路径，且裁切量取自 MiniMaxH3MotionContext 输出的 trim 值；只裁画面会让音轨比视频长。"
+    },
+    {
+      "symptom": "保存 latent 报 NestedTensor 相关错误",
+      "action": "不要直接把采样器输出的联合 latent 交给 SaveLatent；先用 LTXVSeparateAVLatent 拆成两路。"
+    },
+    {
+      "symptom": "续段画面跳变",
+      "action": "核对上一段两路 latent 是否都读回并重组成 context_latent；只接视频 latent 或用末帧代替联合 AV 续接都会退化成近似转场。"
+    }
+  ]
+}

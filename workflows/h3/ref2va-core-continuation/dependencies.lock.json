@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "workflow_id": "h3-ref2va-core-continuation",
+  "hash_basis": "图文件按本仓库内容计算 SHA-256。模型权重不在本仓库镜像；文件名从目标实例 /object_info 解析，null 表示未确认而非零。",
+  "comfyui": {
+    "min_version": "0.30.0",
+    "requirement_source": "本图只用 Core 的 LTXV 拆分/合并、Save/LoadLatent 与视频音频读写节点，已在 ComfyUI 0.30.0 的 object_info 契约中确认；使用 MiniMaxH3MotionContext 时另受该节点包自身的版本要求约束。",
+    "note": "Core 版本与 Motion Context 包版本必须配对；只装成功不代表续接可用。"
+  },
+  "node_packs": [
+    {
+      "id": "h3-motion-context",
+      "display_name": "H3 Motion Context",
+      "repository": "https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context",
+      "commit": "f80e36bc1d7887a143b12e6645313fd6b9cd2aee",
+      "license": "GPL-3.0",
+      "install_path": "ComfyUI/custom_nodes/ComfyUI-H3-Motion-Context",
+      "required_node_classes": [
+        "MiniMaxH3MotionContext"
+      ],
+      "vendored": false,
+      "license_note": "本仓库以 MIT 发布，不覆盖该 GPL-3.0 节点包；安装、修改与再分发遵循其自身许可。",
+      "source_note": "该 commit 是当前安装的 checkout，含本地 nodes.py 修改；不把当前补丁基底当作历史运行锁。"
+    }
+  ],
+  "core": {
+    "repository": "https://github.com/Comfy-Org/ComfyUI",
+    "inspected_current_commit": "6f7cd7fceaaf60d2669b554936394a7412c6fde5",
+    "required_node_classes": [
+      "UNETLoader",
+      "CLIPLoader",
+      "VAELoader",
+      "LoadImage",
+      "LoadVideo",
+      "GetVideoComponents",
+      "SaveLatent",
+      "LoadLatent",
+      "VAEDecode",
+      "CreateVideo",
+      "SaveVideo",
+      "RandomNoise",
+      "BasicGuider",
+      "KSamplerSelect",
+      "BasicScheduler",
+      "SamplerCustomAdvanced",
+      "ImageFromBatch",
+      "LTXVSeparateAVLatent",
+      "LTXVConcatAVLatent",
+      "MiniMaxH3ReferenceToVideo"
+    ],
+    "module_map": {
+      "nodes": "加载器、Save/LoadLatent、VAEDecode、LoadImage",
+      "comfy_extras.nodes_custom_sampler": "RandomNoise, BasicGuider, KSamplerSelect, BasicScheduler, SamplerCustomAdvanced",
+      "comfy_extras.nodes_lt": "LTXVSeparateAVLatent, LTXVConcatAVLatent",
+      "comfy_extras.nodes_images": "ImageFromBatch",
+      "comfy_extras.nodes_video": "LoadVideo, GetVideoComponents, CreateVideo, SaveVideo",
+      "comfy_extras.nodes_minimax_h3": "MiniMaxH3ReferenceToVideo"
+    }
+  },
+  "h3_implementation": {
+    "repository": "https://github.com/MiniMax-AI/MiniMax-H3",
+    "weights_and_license": "https://huggingface.co/MiniMaxAI/MiniMax-H3",
+    "role": "H3 主模型、文本编码器与两路 VAE 的来源；不在本仓库镜像任何权重。"
+  },
+  "models": {
+    "diffusion_model": {
+      "input": "UNETLoader.unet_name",
+      "filename": null,
+      "sha256": null,
+      "resolution": "从目标实例 /object_info 的 UNETLoader 枚举中按已安装的 H3 实现与量化后端选择。"
+    },
+    "text_encoder": {
+      "input": "CLIPLoader.clip_name",
+      "filename": null,
+      "sha256": null,
+      "resolution": "从 CLIPLoader 枚举选择；loader type 保持 minimax。"
+    },
+    "video_vae": {
+      "input": "VAELoader.vae_name",
+      "filename": null,
+      "sha256": null,
+      "resolution": "从 VAELoader 枚举选择 H3 视频 VAE。"
+    },
+    "audio_vae": {
+      "input": "VAELoader.vae_name",
+      "filename": null,
+      "sha256": null,
+      "resolution": "从 VAELoader 枚举选择 H3 音频 VAE；与视频 VAE 不可互换。"
+    }
+  },
+  "runtime_checks": [
+    "对照 /object_info 确认 21 个节点类、输入类型与模型枚举都存在，再解析占位值。",
+    "确认 LTXVSeparateAVLatent / LTXVConcatAVLatent / SaveLatent / LoadLatent 在目标 Core 版本中可用。",
+    "确认 MiniMaxH3MotionContext 已按锁定 commit 安装。",
+    "记录实际使用的 ComfyUI 版本、节点包 commit 与模型文件名。"
+  ],
+  "unknown_policy": "null 表示本仓库未确认该值，不从其他机器或历史记录回填。缺失哈希应在实际运行环境按文件重新计算并记录。"
+}

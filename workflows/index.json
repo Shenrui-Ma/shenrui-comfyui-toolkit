@@ -51,6 +51,28 @@
         "path": "example_workflows/MiniMax H3 - fl2va - ref2va.json",
         "sha256": "d50b3050921183af6f0f8819fbdd79d88d8c1a37c28d40188b63a6eda53a32aa"
       }
+    },
+    {
+      "id": "h3-ref2va-core-continuation",
+      "path": "workflows/h3/ref2va-core-continuation/first.api.template.json",
+      "sha256": "3bb1c5d25b8e1ff26046dcaf5d5b53bde72fef2ebd432f1fd21f81a20be0fd79",
+      "family": "MiniMax-H3",
+      "mode": "ref2va-core-av-latent-continuation",
+      "format": "parameterized-comfyui-api",
+      "status": "offline-checked; graphs included; not rerun in a clean public configuration",
+      "guide": "workflows/h3/ref2va-core-continuation/README.md",
+      "dependencies": "workflows/h3/ref2va-core-continuation/dependencies.lock.json",
+      "graphs": {
+        "location": "this-repository",
+        "first": {
+          "path": "workflows/h3/ref2va-core-continuation/first.api.template.json",
+          "sha256": "3bb1c5d25b8e1ff26046dcaf5d5b53bde72fef2ebd432f1fd21f81a20be0fd79"
+        },
+        "continue": {
+          "path": "workflows/h3/ref2va-core-continuation/continue.api.template.json",
+          "sha256": "4c79fb783288bc16b85055a712875482e5a9f5a27ee7c9ef4f45a97fd0c9639a"
+        }
+      }
     }
   ]
 }
