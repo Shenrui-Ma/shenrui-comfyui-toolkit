@@ -49,13 +49,11 @@ license: MIT
 
 - `references/remote-server.md`
 
-## H3 独立环境（可选）
-
-需要在本机准备 MiniMax H3 视频推理环境时，读取：
+## H3 环境参考记录（按需查阅）
 
 - `environments/h3/README.md`
 
-该环境**独立安装**：`install.py` 只接受不存在的新目录，补丁工具只认独立标记，不覆盖用户已有的 ComfyUI 或共享 site-packages。模型权重可按同哈希复用。环境检查用 `environments/h3/scripts/preflight.py`；检查某个模板的图时加 `--workflow-lock <template>/references/workflow.lock.json`。
+记录作者跑通 H3 时的版本组合（Core、节点、wheel 闭包、模型、补丁）。**默认不要求用户对齐它**：用户已有可用环境就直接推理；只在报错、节点缺失或版本不匹配、需要决定改什么版本时才来查，按需取用其中一段。确实要另建一套时，`install.py` 只接受不存在的新目录，补丁工具只认独立标记，绝不覆盖用户已有的 ComfyUI 或共享 site-packages；模型权重可按同哈希复用。想核对某个模板的图能否在现有实例上跑，用 `environments/h3/scripts/preflight.py --workflow-lock <template>/references/workflow.lock.json`，这是可选的诊断，不是前置步骤。
 
 ## 通用执行流程
 
