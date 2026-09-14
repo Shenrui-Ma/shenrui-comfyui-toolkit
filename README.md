@@ -19,6 +19,7 @@
 - Verifies completion through ComfyUI history instead of treating a returned `prompt_id` as success.
 - Preserves original output files and guards downloads against path traversal.
 - Keeps machine-specific paths, server names, accounts, and credentials out of the repository.
+- Ships a reusable, self-contained H3 environment definition that never installs into an existing ComfyUI or shared site-packages.
 
 The repository is intentionally small today. Its scope will grow toward reusable model-sync procedures, workflow curation, image/video recipes, and prompt-adaptation notes.
 
@@ -97,6 +98,13 @@ Run one image and validate its parameters before starting a large batch.
 ```text
 .
 ├── SKILL.md                         # Agent instructions and routing rules
+├── environments/
+│   └── h3/                          # MiniMax H3 isolated environment
+│       ├── README.md                # Install, patch, model and preflight guide
+│       ├── dependencies.lock.json    # Pinned wheels, node commits, model hashes
+│       ├── scripts/                  # install / apply_patches / model_commands / preflight
+│       ├── vendor/                   # Vendored patches, licences, audit contract
+│       └── tests/                    # Environment regression tests
 ├── references/
 │   ├── local.md                     # Local ComfyUI playbook
 │   └── remote-server.md             # Authorized remote execution playbook

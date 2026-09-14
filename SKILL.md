@@ -49,6 +49,14 @@ license: MIT
 
 - `references/remote-server.md`
 
+## H3 独立环境（可选）
+
+需要在本机准备 MiniMax H3 视频推理环境时，读取：
+
+- `environments/h3/README.md`
+
+该环境**独立安装**：`install.py` 只接受不存在的新目录，补丁工具只认独立标记，不覆盖用户已有的 ComfyUI 或共享 site-packages。模型权重可按同哈希复用。环境检查用 `environments/h3/scripts/preflight.py`；检查某个模板的图时加 `--workflow-lock <template>/references/workflow.lock.json`。
+
 ## 通用执行流程
 
 1. 确认工作流、提示词、参考图、数量、尺寸和输出目录。先查 `workflows/index.json`，按模型家族和生成模式选图；记录实际commit及文件哈希。若来自 Recipes，保持该配方已锁定的参数和版本，不自动更新或替换其工作流。
